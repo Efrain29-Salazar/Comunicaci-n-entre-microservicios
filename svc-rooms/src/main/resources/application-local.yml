@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/rooms_db
+    username: rooms_user
+    password: rooms_pass

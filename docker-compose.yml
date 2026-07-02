@@ -1,0 +1,89 @@
+version: "3.8"
+
+services:
+  rooms-db:
+    image: postgres:16-alpine
+    container_name: rooms-db
+    environment:
+      POSTGRES_DB: rooms_db
+      POSTGRES_USER: rooms_user
+      POSTGRES_PASSWORD: rooms_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - rooms-db-data:/var/lib/postgresql/data
+    networks:
+      - hotel-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rooms_user -d rooms_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  reservations-db:
+    image: postgres:16-alpine
+    container_name: reservations-db
+    environment:
+      POSTGRES_DB: reservations_db
+      POSTGRES_USER: reservations_user
+      POSTGRES_PASSWORD: reservations_pass
+    ports:
+      - "5434:5432"
+    volumes:
+      - reservations-db-data:/var/lib/postgresql/data
+    networks:
+      - hotel-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reservations_user -d reservations_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  svc-rooms:
+    build:
+      context: ./svc-rooms
+    container_name: svc-rooms
+    ports:
+      - "8081:8081"
+    depends_on:
+      rooms-db:
+        condition: service_healthy
+    networks:
+      - hotel-network
+    restart: unless-stopped
+
+  svc-reservations:
+    build:
+      context: ./svc-reservations
+    container_name: svc-reservations
+    ports:
+      - "8082:8082"
+    depends_on:
+      reservations-db:
+        condition: service_healthy
+      svc-rooms:
+        condition: service_started
+    networks:
+      - hotel-network
+    restart: unless-stopped
+
+  nginx-gateway:
+    image: nginx:alpine
+    container_name: nginx-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - svc-rooms
+      - svc-reservations
+    networks:
+      - hotel-network
+
+networks:
+  hotel-network:
+    driver: bridge
+
+volumes:
+  rooms-db-data:
+  reservations-db-data:

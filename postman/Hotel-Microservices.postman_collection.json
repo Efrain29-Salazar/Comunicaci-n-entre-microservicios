@@ -1,0 +1,153 @@
+{
+  "info": {
+    "name": "Hotel Los Andes - Microservicios",
+    "description": "Coleccion base para probar svc-rooms y svc-reservations a traves del API Gateway (Nginx, puerto 80). Ajusta {{roomId}} y {{reservationId}} segun los IDs que devuelva tu ambiente.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "gateway", "value": "http://localhost:80" },
+    { "key": "roomId", "value": "1" },
+    { "key": "reservationId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "svc-rooms",
+      "item": [
+        {
+          "name": "1. Crear habitacion SINGLE",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": \"101\",\n  \"type\": \"SINGLE\",\n  \"pricePerNight\": 45.00,\n  \"totalCapacity\": 2,\n  \"availableRooms\": 2,\n  \"floor\": 1,\n  \"description\": \"Habitacion individual\"\n}"
+            },
+            "url": "{{gateway}}/api/v1/rooms"
+          }
+        },
+        {
+          "name": "1. Crear habitacion DOUBLE",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": \"201\",\n  \"type\": \"DOUBLE\",\n  \"pricePerNight\": 85.00,\n  \"totalCapacity\": 3,\n  \"availableRooms\": 3,\n  \"floor\": 2,\n  \"description\": \"Habitacion doble\"\n}"
+            },
+            "url": "{{gateway}}/api/v1/rooms"
+          }
+        },
+        {
+          "name": "1. Crear habitacion SUITE",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": \"301\",\n  \"type\": \"SUITE\",\n  \"pricePerNight\": 150.00,\n  \"totalCapacity\": 1,\n  \"availableRooms\": 0,\n  \"floor\": 3,\n  \"description\": \"Suite presidencial\"\n}"
+            },
+            "url": "{{gateway}}/api/v1/rooms"
+          }
+        },
+        {
+          "name": "Listar habitaciones",
+          "request": { "method": "GET", "url": "{{gateway}}/api/v1/rooms" }
+        },
+        {
+          "name": "Obtener habitacion por ID",
+          "request": { "method": "GET", "url": "{{gateway}}/api/v1/rooms/{{roomId}}" }
+        },
+        {
+          "name": "Consultar disponibilidad",
+          "request": { "method": "GET", "url": "{{gateway}}/api/v1/rooms/{{roomId}}/availability" }
+        },
+        {
+          "name": "Actualizar disponibilidad",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"availableRooms\": 1\n}" },
+            "url": "{{gateway}}/api/v1/rooms/{{roomId}}/availability"
+          }
+        }
+      ]
+    },
+    {
+      "name": "svc-reservations",
+      "item": [
+        {
+          "name": "2. Crear reserva valida (habitacion disponible)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": 1,\n  \"guestName\": \"Maria Torres\",\n  \"guestEmail\": \"maria.torres@email.com\",\n  \"checkInDate\": \"2026-07-10\",\n  \"checkOutDate\": \"2026-07-14\"\n}"
+            },
+            "url": "{{gateway}}/api/v1/reservations"
+          }
+        },
+        {
+          "name": "3. Crear reserva para habitacion sin disponibilidad (422)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": 3,\n  \"guestName\": \"Juan Perez\",\n  \"guestEmail\": \"juan.perez@email.com\",\n  \"checkInDate\": \"2026-07-10\",\n  \"checkOutDate\": \"2026-07-14\"\n}"
+            },
+            "url": "{{gateway}}/api/v1/reservations"
+          }
+        },
+        {
+          "name": "4. Crear reserva duplicada, mismo huesped/cuarto ACTIVE (422)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": 1,\n  \"guestName\": \"Maria Torres\",\n  \"guestEmail\": \"maria.torres@email.com\",\n  \"checkInDate\": \"2026-08-01\",\n  \"checkOutDate\": \"2026-08-05\"\n}"
+            },
+            "url": "{{gateway}}/api/v1/reservations"
+          }
+        },
+        {
+          "name": "5. Consultar reserva por ID (svc-rooms activo)",
+          "request": { "method": "GET", "url": "{{gateway}}/api/v1/reservations/{{reservationId}}" }
+        },
+        {
+          "name": "Consultar reservas por email",
+          "request": { "method": "GET", "url": "{{gateway}}/api/v1/reservations/guest/maria.torres@email.com" }
+        },
+        {
+          "name": "6. Checkout de reserva ACTIVE (200, status COMPLETED)",
+          "request": { "method": "PATCH", "url": "{{gateway}}/api/v1/reservations/{{reservationId}}/checkout" }
+        },
+        {
+          "name": "7. Checkout de reserva ya COMPLETED (422)",
+          "request": { "method": "PATCH", "url": "{{gateway}}/api/v1/reservations/{{reservationId}}/checkout" }
+        },
+        {
+          "name": "8. Crear reserva con svc-rooms caido (503 - detener svc-rooms antes)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": 2,\n  \"guestName\": \"Carlos Ruiz\",\n  \"guestEmail\": \"carlos.ruiz@email.com\",\n  \"checkInDate\": \"2026-09-01\",\n  \"checkOutDate\": \"2026-09-03\"\n}"
+            },
+            "url": "{{gateway}}/api/v1/reservations"
+          }
+        },
+        {
+          "name": "9. Consultar reserva con svc-rooms caido (200, mensaje fallback)",
+          "request": { "method": "GET", "url": "{{gateway}}/api/v1/reservations/{{reservationId}}" }
+        },
+        {
+          "name": "10. Reiniciar svc-rooms y repetir consulta (recuperacion)",
+          "request": { "method": "GET", "url": "{{gateway}}/api/v1/reservations/{{reservationId}}" }
+        }
+      ]
+    }
+  ]
+}

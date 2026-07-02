@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/reservations_db
+    username: reservations_user
+    password: reservations_pass
+
+rooms:
+  service:
+    url: http://localhost:8081
