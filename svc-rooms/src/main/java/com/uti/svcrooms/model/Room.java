@@ -3,9 +3,6 @@ package com.uti.svcrooms.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-/**
- * JPA entity representing a room type/inventory record of Hotel Los Andes.
- */
 @Entity
 @Table(name = "rooms")
 @Getter

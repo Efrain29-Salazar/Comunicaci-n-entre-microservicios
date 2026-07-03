@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * REST controller exposing reservation operations.
- * No try/catch here on purpose: errors are handled by GlobalExceptionHandler.
- */
 @RestController
 @RequestMapping("/api/v1/reservations")
 @RequiredArgsConstructor

@@ -4,10 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Mirrors the availability payload returned by svc-rooms
- * (GET /api/v1/rooms/{id}/availability).
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

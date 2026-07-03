@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Public representation of a Room returned by the API.
- */
+
 @Data
 @Builder
 @NoArgsConstructor

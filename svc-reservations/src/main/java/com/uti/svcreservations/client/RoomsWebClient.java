@@ -9,12 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-/**
- * Reactive client to svc-rooms using WebClient.
- * Used to fetch room data during reservation creation and when listing
- * reservations by guest email.
- * Protected by the same "roomsService" Circuit Breaker + Retry instance.
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -36,9 +30,6 @@ public class RoomsWebClient {
                 .block();
     }
 
-    /**
-     * Triggered when svc-rooms is unreachable while fetching room data.
-     */
     private RoomDto fallbackRoom(Long roomId, Throwable throwable) {
         log.warn("Fallback triggered for WebClient getRoom(roomId={}): {}", roomId, throwable.getMessage());
         return null;

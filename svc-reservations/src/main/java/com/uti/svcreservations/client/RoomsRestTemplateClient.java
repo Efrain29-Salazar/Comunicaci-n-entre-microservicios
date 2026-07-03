@@ -10,13 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * Synchronous client to svc-rooms using RestTemplate.
- * Used for: checking availability on reservation creation, and enriching
- * getReservationById() / checkout() responses.
- * Protected by Resilience4j Circuit Breaker + Retry, both configured under
- * the "roomsService" instance name (see application.yml).
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -43,21 +36,11 @@ public class RoomsRestTemplateClient {
         return restTemplate.getForObject(url, RoomDto.class);
     }
 
-    /**
-     * Triggered when svc-rooms is unreachable (or the circuit is open) while
-     * checking availability. Returns null so the service layer can react
-     * loudly (creation must fail with 503 - it cannot verify availability).
-     */
     private RoomAvailabilityDto fallbackAvailability(Long roomId, Throwable throwable) {
         log.warn("Fallback triggered for checkAvailability(roomId={}): {}", roomId, throwable.getMessage());
         return null;
     }
 
-    /**
-     * Triggered when svc-rooms is unreachable while fetching room data.
-     * Returns null so the service layer can degrade gracefully with a
-     * placeholder message instead of failing the whole request.
-     */
     private RoomDto fallbackRoom(Long roomId, Throwable throwable) {
         log.warn("Fallback triggered for getRoom(roomId={}): {}", roomId, throwable.getMessage());
         return null;

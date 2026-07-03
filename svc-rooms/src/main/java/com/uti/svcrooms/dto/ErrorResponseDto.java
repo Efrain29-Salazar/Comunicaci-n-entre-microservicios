@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * Uniform error response format required across the whole API:
- * timestamp, status, error, message, path.
- */
+
 @Data
 @Builder
 @NoArgsConstructor

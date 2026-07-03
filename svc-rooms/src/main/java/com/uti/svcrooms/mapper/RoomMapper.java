@@ -5,10 +5,6 @@ import com.uti.svcrooms.dto.RoomResponseDto;
 import com.uti.svcrooms.model.Room;
 import org.springframework.stereotype.Component;
 
-/**
- * Converts between the Room entity and its DTOs, keeping the JPA entity
- * fully decoupled from what is exposed over HTTP.
- */
 @Component
 public class RoomMapper {
 

@@ -6,10 +6,6 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * JPA entity representing a guest reservation. Only stores data owned by
- * svc-reservations; room details are fetched on demand from svc-rooms.
- */
 @Entity
 @Table(name = "reservations")
 @Getter

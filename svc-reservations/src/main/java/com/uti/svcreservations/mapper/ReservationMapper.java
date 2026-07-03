@@ -9,12 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.temporal.ChronoUnit;
 
-/**
- * Converts between Reservation entity, its request DTO and the enriched
- * response DTO. When svc-rooms data is unavailable (room == null), the
- * response degrades gracefully with a placeholder message instead of
- * failing the whole request.
- */
 @Component
 public class ReservationMapper {
 

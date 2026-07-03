@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Mirrors the room data returned by svc-rooms (GET /api/v1/rooms/{id}).
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

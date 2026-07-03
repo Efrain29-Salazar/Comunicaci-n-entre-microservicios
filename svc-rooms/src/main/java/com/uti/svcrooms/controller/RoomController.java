@@ -13,10 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * REST controller exposing the room catalog and availability of Hotel Los Andes.
- * No try/catch here on purpose: errors are handled by GlobalExceptionHandler.
- */
 @RestController
 @RequestMapping("/api/v1/rooms")
 @RequiredArgsConstructor

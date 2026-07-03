@@ -10,11 +10,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Enriched response returned to the client. roomNumber / roomType /
- * pricePerNight are obtained from svc-rooms (RestTemplate or WebClient),
- * never stored locally.
- */
 @Data
 @Builder
 @NoArgsConstructor
@@ -35,7 +30,6 @@ public class ReservationResponseDto {
     private ReservationStatus status;
     private LocalDateTime createdAt;
 
-    // Enriched data obtained from svc-rooms
     private String roomNumber;
     private String roomType;
     private Double pricePerNight;

@@ -8,9 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Payload used to register a new room. Kept fully separate from the JPA entity.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

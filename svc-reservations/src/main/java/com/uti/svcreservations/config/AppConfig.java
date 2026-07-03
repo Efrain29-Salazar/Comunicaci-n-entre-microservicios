@@ -6,11 +6,6 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-/**
- * Configuration for the two HTTP clients used to communicate with svc-rooms:
- * - RestTemplate: classic blocking client (availability checks, sync enrichment).
- * - WebClient: reactive client (enrichment on creation and by-email lookups).
- */
 @Configuration
 public class AppConfig {
 

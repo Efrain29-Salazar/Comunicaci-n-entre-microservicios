@@ -12,11 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
-/**
- * Centralized exception handler for svc-rooms.
- * No controller in this service uses try/catch: every error flows here
- * and is translated into the uniform error response format.
- */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
